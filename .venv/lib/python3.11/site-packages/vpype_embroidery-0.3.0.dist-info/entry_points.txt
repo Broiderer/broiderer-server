@@ -1,0 +1,4 @@
+[vpype.plugins]
+efill = vpype_embroidery.efill:efill
+eread = vpype_embroidery.eread:eread
+ewrite = vpype_embroidery.ewrite:ewrite
