@@ -1,9 +1,7 @@
 import os
-from datetime import datetime, timedelta
-from flask import Flask, request, redirect, send_from_directory, url_for, abort
+from flask import Flask, request, send_from_directory, url_for, abort
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
-from apscheduler.schedulers.background import BackgroundScheduler
 from convert import pes_to_svg, svg_to_pes
 
 app = Flask(__name__)
@@ -12,26 +10,6 @@ cwd = os.getcwd()
 app.config['UPLOAD_FOLDER'] = os.path.join(cwd, 'static/uploads')
 app.config['CONVERTED_FOLDER'] = os.path.join(cwd, 'static/converted')
 ALLOWED_EXTENSIONS = {'svg', 'pes'}
-TIMEOUT = timedelta(hours=1)
-
-def delete_expired_files():
-    now = datetime.now()
-    for filename in os.listdir(app.config['UPLOAD_FOLDER']):
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        creation_time = datetime.fromtimestamp(os.path.getctime(file_path))
-        if now - creation_time > TIMEOUT:
-            os.remove(file_path)
-    for filename in os.listdir(app.config['CONVERTED_FOLDER']):
-        file_path = os.path.join(app.config['CONVERTED_FOLDER'], filename)
-        creation_time = datetime.fromtimestamp(os.path.getctime(file_path))
-        if now - creation_time > TIMEOUT:
-            os.remove(file_path)
-
-
-# Create and configure the scheduler
-scheduler = BackgroundScheduler()
-scheduler.add_job(delete_expired_files, 'interval', minutes=15)
-scheduler.start()
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -45,12 +23,15 @@ def convert():
     if file:
         if allowed_file(file.filename) and extensionFrom and extensionTo:
             filename = secure_filename(file.filename)
+            app.logger.info('%s', os.path.join(app.config['UPLOAD_FOLDER'], filename))
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
             converted_filename = os.path.splitext(filename)[0] + '.' + extensionTo
+            app.logger.info('%s', converted_filename)
             input_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             output_path = os.path.join(app.config['CONVERTED_FOLDER'], converted_filename)
-            
+            app.logger.info('%s', input_path)
+            app.logger.info('%s', output_path)
             if extensionTo == 'svg' and extensionFrom == 'pes':
                 pes_to_svg(input_path, output_path)
             elif extensionTo == 'pes' and extensionFrom == 'svg':

@@ -10,6 +10,6 @@ def pes_to_svg(input_path, output_path):
 def svg_to_pes(input_path, output_path):
     subprocess.run([
         'vpype', 'read', input_path, 
-        'efill', '-d 5px', '-t 0px' 
+        'efill', '-d 5px', '-t 1px' 
         'ewrite', output_path
     ])

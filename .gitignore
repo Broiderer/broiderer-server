@@ -17,6 +17,8 @@ build/
 .idea/
 docs/_build/
 .vscode
+static/converted/*
+static/uploads/*
 
 # Coverage reports
 htmlcov/
