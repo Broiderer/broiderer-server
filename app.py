@@ -10,10 +10,14 @@ cwd = os.getcwd()
 app.config['UPLOAD_FOLDER'] = os.path.join(cwd, 'static/uploads')
 app.config['CONVERTED_FOLDER'] = os.path.join(cwd, 'static/converted')
 ALLOWED_EXTENSIONS = {'svg', 'pes'}
+MAX_FILE_SIZE = 0.1 * 1024 * 1024  # 100ko
 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def file_size_exceeds_limit(file_path):
+   return os.path.getsize(file_path) > MAX_FILE_SIZE
 
 @app.route('/convert', methods=['POST'])
 def convert():
@@ -22,9 +26,14 @@ def convert():
     extensionTo = request.args.get('extensionTo')
     if file:
         if allowed_file(file.filename) and extensionFrom and extensionTo:
+
             filename = secure_filename(file.filename)
-            app.logger.info('%s', os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_path)
+
+            if file_size_exceeds_limit(file_path):
+                os.remove(file_path)
+                abort(400, 'File size exceeds the allowed limit')
 
             converted_filename = os.path.splitext(filename)[0] + '.' + extensionTo
             app.logger.info('%s', converted_filename)
