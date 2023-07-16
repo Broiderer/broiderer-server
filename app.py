@@ -24,6 +24,7 @@ def convert():
     file = request.files.get('file')
     extensionFrom = request.args.get('extensionFrom')
     extensionTo = request.args.get('extensionTo')
+
     if file:
         if allowed_file(file.filename) and extensionFrom and extensionTo:
 
@@ -44,7 +45,7 @@ def convert():
             if extensionTo == 'svg' and extensionFrom == 'pes':
                 pes_to_svg(input_path, output_path)
             elif extensionTo == 'pes' and extensionFrom == 'svg':
-                svg_to_pes(input_path, output_path)
+                svg_to_pes(input_path, output_path, request.args.get('tolerance'), request.args.get('distance'))
             else:
                 abort(400, 'Invalid file or extension')
 
