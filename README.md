@@ -1,20 +1,17 @@
 # Local installation guide
 
-## Create a virtuel environment
+## Create a virtual environment
 
 ```
 python3 -m venv .venv
 . .venv/bin/activate
 ```
-<br />
 
 ## Install dependencies
 
 ```
 pip install -r requirements.txt
 ```
-
-<br />
 
 If the installation was successful, this command should open a vpype-viewer instance :
 ```
