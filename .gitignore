@@ -22,6 +22,11 @@ docs/_build/
 .vscode
 static/converted/*
 static/uploads/*
+bin/
+lib/
+share/
+.Python
+pyvenv.cfg
 
 # Coverage reports
 htmlcov/
