@@ -23,3 +23,6 @@ vpype begin grid -o 25 25 10 10 circle 0 0 100 end efill show
 ```
 flask run --debug
 ```
+
+## Hosting
+The server is hosted on pythonanywhere.com and the `tasks` folder contains scripts used by pythonanywhere to clean updated & converted files every hour.
