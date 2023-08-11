@@ -24,6 +24,7 @@ def file_size_exceeds_limit(file_path):
 
 @app.route("/convert", methods=["POST"])
 def convert():
+    app.logger.info('Test push for CD')
     file = request.files.get("file")
     extensionFrom = request.args.get("extensionFrom")
     extensionTo = request.args.get("extensionTo")
