@@ -5,8 +5,8 @@ from datetime import datetime, timedelta
 app = Flask(__name__)
 TIMEOUT = timedelta(hours=1)
 cwd = os.getcwd()
-app.config["UPLOAD_FOLDER"] = os.path.join(cwd, "broiderer/static/uploads")
-app.config["CONVERTED_FOLDER"] = os.path.join(cwd, "broiderer/static/converted")
+app.config["UPLOAD_FOLDER"] = os.path.join(cwd, "broiderer-server/static/uploads")
+app.config["CONVERTED_FOLDER"] = os.path.join(cwd, "broiderer-server/static/converted")
 
 
 def delete_expired_files():
