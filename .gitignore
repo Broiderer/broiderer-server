@@ -22,6 +22,8 @@ docs/_build/
 .vscode
 static/converted/*
 static/uploads/*
+!static/converted/.gitkeep
+!static/uploads/.gitkeep
 bin/
 lib/
 share/
