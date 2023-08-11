@@ -3,7 +3,7 @@ from flask import Flask, request, send_from_directory, url_for, abort
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
 from convert import pes_to_svg, svg_to_pes
-import git
+from git.repo import Repo
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": ["https://broiderer.com", "https://www.broiderer.com"]}})
@@ -24,7 +24,6 @@ def file_size_exceeds_limit(file_path):
 
 @app.route("/convert", methods=["POST"])
 def convert():
-    app.logger.info('Test push for CD')
     file = request.files.get("file")
     extensionFrom = request.args.get("extensionFrom")
     extensionTo = request.args.get("extensionTo")
@@ -80,9 +79,9 @@ def download(filename):
 
 @app.route('/git_update', methods=['POST'])
 def git_update():
-    repo = git.Repo('./orbe')
+    repo = Repo('./')
     origin = repo.remotes.origin
-    repo.create_head('main',
-                     origin.refs.main).set_tracking_branch(origin.refs.main).checkout()
+    repo.create_head('master',
+                     origin.refs.master).set_tracking_branch(origin.refs.master).checkout()
     origin.pull()
     return '', 200

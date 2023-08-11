@@ -1,8 +1,6 @@
 import subprocess
 from flask import Flask
 
-app = Flask(__name__)
-
 
 def pes_to_svg(input_path, output_path):
     subprocess.run(
@@ -21,8 +19,6 @@ def pes_to_svg(input_path, output_path):
 
 
 def svg_to_pes(input_path, output_path, tolerance, distance):
-    app.logger.info(tolerance)
-    app.logger.info(distance)
     subprocess.run(
         [
             "vpype",

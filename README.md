@@ -26,3 +26,5 @@ flask run --debug
 
 ## Hosting
 The server is hosted on pythonanywhere.com and the `tasks` folder contains scripts used by pythonanywhere to clean updated & converted files every hour.
+
+The app is deployed through git hooks automatically when pushed to master.
