@@ -3,6 +3,7 @@ from flask import Flask, request, send_from_directory, url_for, abort
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
 from convert import pes_to_svg, svg_to_pes
+import git
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": ["https://broiderer.com", "https://www.broiderer.com"]}})
@@ -74,3 +75,13 @@ def convert():
 @app.route("/download/<filename>", methods=["GET"])
 def download(filename):
     return send_from_directory(app.config["CONVERTED_FOLDER"], filename)
+
+
+@app.route('/git_update', methods=['POST'])
+def git_update():
+    repo = git.Repo('./orbe')
+    origin = repo.remotes.origin
+    repo.create_head('main',
+                     origin.refs.main).set_tracking_branch(origin.refs.main).checkout()
+    origin.pull()
+    return '', 200
