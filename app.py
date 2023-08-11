@@ -5,7 +5,7 @@ from flask_cors import CORS
 from convert import pes_to_svg, svg_to_pes
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": ["*", "https://yourapp.com"]}})
+CORS(app, resources={r"/*": {"origins": ["https://broiderer.com", "https://www.broiderer.com"]}})
 cwd = os.getcwd()
 app.config['UPLOAD_FOLDER'] = os.path.join(cwd, 'static/uploads')
 app.config['CONVERTED_FOLDER'] = os.path.join(cwd, 'static/converted')
